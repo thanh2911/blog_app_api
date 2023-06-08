@@ -12,7 +12,7 @@ const LoginPass = () => {
     const [typePass, setTypePass] = useState(false);
     const dispatch = useDispatch<any>();
 
-    const hanldeChangeInput = (e: InputChange) => {
+    const handleChangeInput = (e: InputChange) => {
         const {value, name} = e.target;
         setUserLogin({...userLogin, [name]: value}) ;
     }
@@ -30,7 +30,7 @@ const LoginPass = () => {
         <div className="form-group">
             <label htmlFor="account">Email / Phone Number</label>
             <input type="text" className='form-control' id='account'
-            name='account' value={account} onChange={hanldeChangeInput}
+            name='account' value={account} onChange={handleChangeInput}
             />
         </div>
 
@@ -43,7 +43,7 @@ const LoginPass = () => {
                 id='password'
                 name='password' 
                 value={password} 
-                onChange={hanldeChangeInput}
+                onChange={handleChangeInput}
                 />
 
                 <small onClick={() => setTypePass(!typePass)}>

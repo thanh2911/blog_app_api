@@ -1,0 +1,24 @@
+yarn add express mongoose dotenv cors morgan cookie-parser
+yarn add -D @types/express @types/mongoose @types/dotenv @types/cors @types/morgan @types/cookie-parser
+yarn add bcrypt jsonwebtoken
+yarn add -D @types/bcrypt @types/jsonwebtoken
+
+yarn add -D typescript ts-node-dev @types/node
+
+
+yarn add nodemailer google-auth-library
+yarn add -D @types/nodemailer 
+
+npx tsc --init
+
+npx ts-node-dev server/index.ts
+npx tsc 
+node dist/index.js
+
+
+fronend:
+yarn create react-app client --template typescript
+yarn add react-router-dom axios redux redux-thunk react-redux redux-devtools-extension
+
+!!!!Errors
+Menu => select, option
