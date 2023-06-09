@@ -22,3 +22,6 @@ yarn add react-router-dom axios redux redux-thunk react-redux redux-devtools-ext
 
 !!!!Errors
 Menu => select, option
+!!!!Errors 
+authCtrl => active
+e11000 duplicate key error collection: test.users index: account_1 dup key: { account: "congthanh291199@gmail.com" }

@@ -16,7 +16,8 @@ async (dispatch: Dispatch <IAuthType | IAlertType>) => {
             type: AUTH,
             payload: {
                 token: res.data.access_token,
-                user: res.data.user
+                user: res.data.user,
+                msg: res.data.msg
             }
         })
         
@@ -44,22 +45,11 @@ async (dispatch: Dispatch <IAuthType | IAlertType>) => {
         else {
             dispatch({type: ALERT, payload: {loading: true}})
             const res = await postAPI('register', userRegister);
-            console.log(res.data);
+            // console.log(res.data);
 
-            // dispatch({
-            //     type: AUTH,
-            //     payload: {
-            //         token: res.data.access_token,
-            //         user: res.data.user
-            //     }
-            // })
-            
             dispatch({type: ALERT, payload: {success: res.data.msg}})
         }
        
-        
-
-
     } catch (err:any) {
         dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
         console.log(err.response.data.msg);
