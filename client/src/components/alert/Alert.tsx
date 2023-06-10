@@ -6,7 +6,7 @@ import { RootStore } from '../../utils/TypesScript';
 
 export const Alert = () => {
   const alert = useSelector((state: RootStore) => state.alert)
-  console.log(alert);
+  // console.log(alert);
   return (
     <div>
       {alert.loading && <Loading />}

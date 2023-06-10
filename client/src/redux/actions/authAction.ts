@@ -1,7 +1,7 @@
 import { IUserLogin,IUserRegister } from "../../utils/TypesScript";
 import { AUTH, IAuthType } from '../types/authType'
 import { ALERT, IAlertType } from "../types/alertType";
-import { postAPI } from "../../utils/FetchData";
+import { postAPI, getAPI } from "../../utils/FetchData";
 import { Dispatch }from 'redux'
 import { validRegister } from "../../utils/Valid";
 
@@ -11,13 +11,13 @@ async (dispatch: Dispatch <IAuthType | IAlertType>) => {
         dispatch({type: ALERT, payload: {loading: true}})
         const res = await postAPI('login', userLogin);
             // console.log(res.data);
-
+        localStorage.setItem("logged","true")
         dispatch({
             type: AUTH,
             payload: {
-                token: res.data.access_token,
-                user: res.data.user,
-                msg: res.data.msg
+                msg: res.data.msg,
+                access_token: res.data.access_token,
+                user: res.data.user
             }
         })
         
@@ -53,6 +53,48 @@ async (dispatch: Dispatch <IAuthType | IAlertType>) => {
     } catch (err:any) {
         dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
         console.log(err.response.data.msg);
+        
+    }
+    
+}
+
+export const refreshToken = () => 
+async (dispatch: Dispatch <IAuthType | IAlertType>) => {
+
+    const logged = localStorage.getItem("logged");
+    console.log(logged);
+    if(logged !== 'true') return;
+    try {
+        dispatch({type: ALERT, payload: {loading: true}})
+        const res = await getAPI('refresh_token');
+        console.log(res);
+
+        dispatch({
+            type: AUTH,
+            payload: res.data
+        })
+
+        dispatch({type: ALERT, payload: {loading: false}})
+   
+        
+       
+    } catch (err:any) {
+        dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
+        
+    }
+    
+}
+
+export const logout = () => 
+async (dispatch: Dispatch <IAuthType | IAlertType>) => {
+
+    try {
+        localStorage.removeItem("logged");
+        await getAPI('logout');
+        window.location.href = '/'
+       
+    } catch (err:any) {
+        dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
         
     }
     

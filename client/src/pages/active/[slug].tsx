@@ -11,7 +11,6 @@ const Active = () => {
     const [success, setSuccess] = useState('');
     const [errors, setErrors] = useState('');
 
-    
     useEffect(() => {
         if(slug) {
             postAPI('active', {active_token: slug})
@@ -23,6 +22,8 @@ const Active = () => {
             )
         }
     },[slug])
+
+    // console.log(success,errors);
 
   return (
     <div>

@@ -121,8 +121,9 @@ const authCtrl = {
            const access_token = generateAccessToken({id: user._id});
 
            res.json({
-            msg: "Success !",
-            access_token
+            msg: "Logged !",
+            access_token, 
+            user
         });
            
 
