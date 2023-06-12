@@ -41,7 +41,7 @@ const Menu = () => {
                         <img src={auth.user.avatar} alt="" style={{width:"30px", height: "30px"}}/>
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><Link to='/profile'>Profile</Link></li>
+                        <li><Link to={`/profile/${auth.user._id}`}>Profile</Link></li>
                         <li><Link to='#' 
                         onClick={() => dispatch(logout())}
                         >
