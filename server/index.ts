@@ -23,6 +23,8 @@ connect();
 
 // Routes 
 app.use('/api', routes.authRouter);
+app.use('/api', routes.useRouter);
+
 
 // Server listenning
 const PORT = process.env.PORT || 5000 ;

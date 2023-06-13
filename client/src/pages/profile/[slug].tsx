@@ -11,7 +11,6 @@ const Profile = () => {
 
   const { slug } : IParams = useParams();
   const { auth } = useSelector((state: RootStore) => state);
-  console.log(typeof slug, typeof auth.user?._id);
   
 
   return (
