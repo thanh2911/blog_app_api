@@ -24,6 +24,7 @@ connect();
 // Routes 
 app.use('/api', routes.authRouter);
 app.use('/api', routes.useRouter);
+app.use('/api', routes.categoryRouter);
 
 
 // Server listenning
