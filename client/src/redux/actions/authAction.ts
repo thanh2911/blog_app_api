@@ -62,12 +62,12 @@ export const refreshToken = () =>
 async (dispatch: Dispatch <IAuthType | IAlertType>) => {
 
     const logged = localStorage.getItem("logged");
-    console.log(logged);
+    // console.log(logged);
     if(logged !== 'true') return;
     try {
         dispatch({type: ALERT, payload: {loading: true}})
         const res = await getAPI('refresh_token');
-        console.log(res);
+        // console.log(res);
 
         dispatch({
             type: AUTH,

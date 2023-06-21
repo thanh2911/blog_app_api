@@ -33,6 +33,12 @@ const Menu = () => {
                 ))
             }
         </ul>
+        {
+            auth.user?.role === 'admin' &&
+            <li>
+                <Link to='/category'>Category</Link>
+            </li>
+        }
         <div className="dropdown">
             {
                 auth.user && 

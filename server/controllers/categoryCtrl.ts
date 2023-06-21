@@ -6,9 +6,12 @@ const categoryCtrl = {
     createCategory:async (req: IReqAuth, res: Response) => {
         if(!req.user) return res.status(400).json({msg: "Invalid Authentication."})
     
-        if(req.user.role !== 'user') return res.status(400).json({msg: "Invalid Authentication."})
+        if(req.user.role !== 'admin') return res.status(400).json({msg: "Invalid Authentication."})
         try {
             const name = req.body.name.toLowerCase();
+
+            const checkName = await Categories.findOne({name});
+            if(checkName) return res.status(400).json({msg: `${name} already exists`})
             
             const newCategory = new Categories({name});
 
@@ -43,7 +46,7 @@ const categoryCtrl = {
     updateCategory:async (req: IReqAuth, res: Response) => {
         if(!req.user) return res.status(400).json({msg: "Invalid Authentication."})
     
-        if(req.user.role !== 'user') return res.status(400).json({msg: "Invalid Authentication."})
+        if(req.user.role !== 'admin') return res.status(400).json({msg: "Invalid Authentication."})
         try {
             await Categories.findOneAndUpdate({
             _id: req.params.id
@@ -59,7 +62,7 @@ const categoryCtrl = {
     deleteCategory:async (req: IReqAuth, res: Response) => {
         if(!req.user) return res.status(400).json({msg: "Invalid Authentication."})
     
-        if(req.user.role !== 'user') return res.status(400).json({msg: "Invalid Authentication."})
+        if(req.user.role !== 'admin') return res.status(400).json({msg: "Invalid Authentication."})
         try {
             await Categories.findByIdAndDelete(req.params.id)
 
