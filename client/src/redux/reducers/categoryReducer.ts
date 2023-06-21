@@ -1,4 +1,4 @@
-import { CREATE_CATEGORY, GET_CATEGORIES ,ICategoryType } from "../types/categoryType";
+import { CREATE_CATEGORY, GET_CATEGORIES, UPDATE_CATEGORY, DELETE_CATEGORY ,ICategoryType } from "../types/categoryType";
 import { ICategory } from "../../utils/TypesScript";
 
 const categoryReducer = (
@@ -8,6 +8,17 @@ const categoryReducer = (
             return [action.payload, ...state]
         case GET_CATEGORIES:
             return action.payload
+        case UPDATE_CATEGORY:
+            return state.map(
+                item => item._id=== action.payload._id
+                ? {...item, name: action.payload.name}
+                : item
+            )
+            case DELETE_CATEGORY:
+                return state.filter(
+                    item => item._id !== action.payload
+                    
+                )
         default: 
             return state
 
