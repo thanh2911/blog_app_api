@@ -4,6 +4,7 @@ import { RootStore, IBlog } from '../utils/TypesScript';
 import NotFound from '../components/global/NotFound';
 import CreateForm from '../components/cards/CreateForm';
 import CardHoriz from '../components/cards/CardHoriz';
+import ReactQuill from '../components/editor/ReactQuill';
 
 const CreateBlog = () => {
     const initState = {
@@ -18,8 +19,12 @@ const CreateBlog = () => {
     }
 
     const [blog, setBlog] = useState<IBlog>(initState);
+    const [body,setBody] = useState('')
     const { auth, categories } = useSelector((state: RootStore) => state)
     const dispatch = useDispatch<any>();
+
+    console.log(body);
+    
 
     if(!auth.access_token) return <NotFound />
   return (
@@ -27,7 +32,7 @@ const CreateBlog = () => {
         <h2>Create Blog</h2>
 
         <div className="div">
-            <h5>Creste</h5>
+            <h5>Create</h5>
             <div className="div">
                 <CreateForm blog={blog} setBlog={setBlog}/>
             </div>
@@ -37,6 +42,10 @@ const CreateBlog = () => {
             </div>
             
         </div>
+
+        <ReactQuill setBody= {setBody}/>
+
+        <button className='btn btn-dark'> Create Post </button>
     </div>
   )
 }
