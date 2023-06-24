@@ -28,6 +28,76 @@ const blogCtrl = {
         } catch (err: any) {
             res.status(500).json({msg: err.message})
         }
+    },
+    getHomeBlogs: async (req: IReqAuth, res: Response) => {
+        
+        try {
+
+            const blogs = await Blogs.aggregate([
+                // User 
+                {
+                    $lookup: {
+                        from: "users",
+                        let: {user_id: "$user"},
+                        pipeline:[
+                            { $match: {$expr: { $eq: ["$_id", "$$user_id"]}}},
+                            { $project: {password: 0}}
+                        ],
+
+                        as: "user"
+                    }
+                },
+                // array => object
+                {
+                    $unwind: "$user"
+                },
+
+                {
+                    $lookup: {
+                        from: "categories",
+                        localField: "category",
+                        foreignField: "_id",
+                    
+                        as: "category"
+                    }
+                },
+                // array => object
+                {
+                    $unwind: "$category"
+                },
+                // sorting
+                {
+                    $sort: { "createdAt" : -1}
+                },
+                // Group by category
+
+                {
+                    $group: {
+                        _id: "$category._id",
+                        name: { $first: "$category.name"},
+                        blogs: { $push: "$$ROOT"},
+                        count: {$sum: 1}
+                    }
+                },
+
+                // pagination for blogs 
+                {
+                    $project: {
+                        blogs: {
+                            $slice: ['$blogs',0,4]
+                        },
+                        count: 1,
+                        name: 1
+                    }
+                }
+            ]);
+            
+            res.json(
+                blogs
+            )
+        } catch (err: any) {
+            res.status(500).json({msg: err.message})
+        }
     }
 }
 

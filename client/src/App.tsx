@@ -7,6 +7,8 @@ import { Alert } from './components/alert/Alert';
 import { useDispatch } from 'react-redux';
 import { refreshToken } from './redux/actions/authAction';
 import { getCategories } from './redux/actions/categoryAction';
+import { getHomeBlogs } from './redux/actions/blogAction';
+
 
 const App = () => {
 
@@ -15,6 +17,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getCategories())
     dispatch(refreshToken())
+    dispatch(getHomeBlogs())
 
   },[dispatch])
 
