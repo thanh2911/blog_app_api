@@ -21,7 +21,9 @@ export const createBlog = (blog: IBlog, token: string
         
         const newBlog = {...blog, thumbnail: url};
 
-        console.log(newBlog);
+        const res = await postAPI('blog', newBlog, token)
+
+        console.log({res});
         
 
         dispatch({type: ALERT, payload: {loading: false}})
