@@ -8,7 +8,7 @@ interface IProps{
 
 const CardVert: React.FC<IProps> = ({blog}) => {
   return (
-    <div className="card" style={{width: "18rem;"}}>
+    <div className="card" style={{width: "18rem"}}>
         {
             typeof(blog.thumbnail) === "string" && 
             <img src={blog.thumbnail} className="card-img-top" alt="..." 

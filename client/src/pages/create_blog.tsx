@@ -55,7 +55,7 @@ const CreateBlog = () => {
         
     }
 
-    console.log({blog,text});
+    // console.log({blog,text});
     
 
     if(!auth.access_token) return <NotFound />
