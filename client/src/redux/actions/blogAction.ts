@@ -61,16 +61,18 @@ async (dispatch: Dispatch<IAlertType| IGetHomeBlogsType >) => {
     }
 }
 
-export const getBlogsByCategoryId = (id: string) => 
+export const getBlogsByCategoryId = (id: string, search: string) => 
 async (dispatch: Dispatch<IAlertType | IGetBlogsCategoryType>) => {
+
+    console.log({search});
     try {
         dispatch({type: ALERT, payload: {loading: true}})
 
-        const res = await getAPI(`blogs/${id}`);
+        const res = await getAPI(`blogs/${id}${search}`);
 
         dispatch({
             type: GET_BLOGS_CATEGORY_ID,
-            payload: {...res.data, id}
+            payload: {...res.data, id, search}
         })
 
         console.log({res});

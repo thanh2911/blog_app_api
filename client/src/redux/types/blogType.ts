@@ -19,7 +19,8 @@ export interface IGetHomeBlogsType {
 export interface IBlogsCategory {
     id: string,
     blogs: IBlog[],
-    total: number
+    total: number,
+    search: string
 }
 
 export interface IGetBlogsCategoryType {
