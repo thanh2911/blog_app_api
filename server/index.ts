@@ -26,7 +26,7 @@ app.use('/api', routes.authRouter);
 app.use('/api', routes.useRouter);
 app.use('/api', routes.categoryRouter);
 app.use('/api', routes.blogRouter);
-
+app.use('/api', routes.commentRouter);
 
 
 // Server listenning
