@@ -8,7 +8,9 @@ import {
     GET_HOME_BLOGS,
     IGetBlogsCategoryType,
     GET_BLOGS_CATEGORY_ID, 
-    IGetHomeBlogsType 
+    IGetHomeBlogsType,
+    GET_BLOGS_USER_ID,
+    IGetBlogsUserType 
 } from "../types/blogType"
 
 
@@ -68,7 +70,7 @@ async (dispatch: Dispatch<IAlertType | IGetBlogsCategoryType>) => {
     try {
         dispatch({type: ALERT, payload: {loading: true}})
 
-        const res = await getAPI(`blogs/${id}${search}`);
+        const res = await getAPI(`blogs/category/${id}${search}`);
 
         dispatch({
             type: GET_BLOGS_CATEGORY_ID,
@@ -78,6 +80,29 @@ async (dispatch: Dispatch<IAlertType | IGetBlogsCategoryType>) => {
         console.log({res});
         
         
+
+        dispatch({type: ALERT, payload: {loading: false}})
+
+    } catch (err: any) {
+        dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
+        
+    }
+}
+
+export const getBlogsByUserId = (id: string, search?: string) => 
+async (dispatch: Dispatch<IAlertType | IGetBlogsUserType>) => {
+
+    let value = search ? search : `?page=${1}`
+
+    try {
+        dispatch({type: ALERT, payload: {loading: true}})
+
+        const res = await getAPI(`blogs/user/${id}${value}`);
+
+        dispatch({
+            type: "GET_BLOGS_USER_ID",
+            payload: {...res.data, id, search}
+        })
 
         dispatch({type: ALERT, payload: {loading: false}})
 
