@@ -19,13 +19,13 @@ const DetailBlog = () => {
         setLoading(true)
         getAPI(`blog/${slug}`)
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 setBlog(res.data.blog)
                 setLoading(false)
                 
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
                 setError(err.response.data.msg)
                 setLoading(false)
             })
