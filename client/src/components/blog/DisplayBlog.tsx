@@ -29,7 +29,7 @@ const DisplayBlog: React.FC<IProps> = ({blog}) => {
             user: auth.user ,
             blog_id: (blog._id as string),
             blog_user_id: (blog.user as IUser)._id,
-            createAt: new Date().toISOString()
+            createdAt: new Date().toISOString()
         }
         
         setShowComments([...showComments, data])
@@ -55,6 +55,7 @@ const DisplayBlog: React.FC<IProps> = ({blog}) => {
         fetchComments(blog._id)
 
     },[blog._id,fetchComments])
+    
     
   return (
         <div>
