@@ -9,7 +9,7 @@ interface IProps{
 
 const AvatarReply: React.FC<IProps> = ({user,reply}) => {
 
-    console.log({user,reply});
+    // console.log({user,reply});
     
   return (
     <div className="avatar_reply">

@@ -90,7 +90,12 @@ async (dispatch: Dispatch <IAuthType | IAlertType>) => {
 
     try {
         localStorage.removeItem("logged");
+        
         await getAPI('logout');
+        dispatch({
+            type: AUTH,
+            payload: { }
+        })
         window.location.href = '/'
        
     } catch (err:any) {

@@ -15,7 +15,7 @@ const CommentList: React.FC<IProps> = ({comment,showReply,setShowReply}) => {
     const { auth } = useSelector((state: RootStore) => state)
     const dispatch = useDispatch<any>()
 
-    const handleReply = (body: string) => {
+    const handleReply =  (body: string) => {
        if(!auth.user || !auth.access_token) return;
 
        const data = {
@@ -31,9 +31,8 @@ const CommentList: React.FC<IProps> = ({comment,showReply,setShowReply}) => {
        console.log(data);
        setShowReply([...showReply,data])
 
-       dispatch(replyComments(data, auth.access_token))
+        dispatch(replyComments(data, auth.access_token))
        setOnReply(false)
-       
         
     }    
 

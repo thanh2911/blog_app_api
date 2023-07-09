@@ -11,6 +11,7 @@ interface IProps {
 const Comments: React.FC<IProps> = ({comment}) => {
 
   const [showReply, setShowReply] = useState<IComment[]>([])
+  const [next,setNext] = useState(2)
 
   useEffect(() => {
     if(!comment.replyCM) return;
@@ -18,7 +19,6 @@ const Comments: React.FC<IProps> = ({comment}) => {
     setShowReply(comment.replyCM)
   },[comment.replyCM])
 
-  console.log({showReply});
   
 
   return (
@@ -34,7 +34,7 @@ const Comments: React.FC<IProps> = ({comment}) => {
         />
 
         {
-          showReply.map((comment,index) => (
+          showReply.slice(0,next).map((comment,index) => (
             <div key= {index} style={{
               opacity: comment._id ? 1 : 0.5,
               pointerEvents: comment._id ? 'initial' : 'none',
@@ -51,6 +51,21 @@ const Comments: React.FC<IProps> = ({comment}) => {
               />
             </div>
           ))
+        }
+
+        {
+          <div>
+            {
+              showReply.length - next > 0 
+              ? <small onClick={() => setNext(next + 5)}>
+                  see more comments...
+              </small>
+              : showReply.length > 2 &&
+              <small onClick={() => setNext(2)}>
+                Hide comments...
+              </small>
+            }
+          </div>
         }
     </div>
   )

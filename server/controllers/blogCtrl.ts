@@ -46,14 +46,14 @@ const blogCtrl = {
                 // User 
                 {
                     $lookup: {
-                        from: "users",
-                        let: {user_id: "$user"},
-                        pipeline:[
+                        "from": "users",
+                        "let": {user_id: "$user"},
+                        "pipeline":[
                             { $match: {$expr: { $eq: ["$_id", "$$user_id"]}}},
                             { $project: {password: 0}}
                         ],
 
-                        as: "user"
+                        "as": "user"
                     }
                 },
                 // array => object
@@ -63,11 +63,11 @@ const blogCtrl = {
 
                 {
                     $lookup: {
-                        from: "categories",
-                        localField: "category",
-                        foreignField: "_id",
+                        "from": "categories",
+                        "localField": "category",
+                        "foreignField": "_id",
                     
-                        as: "category"
+                        "as": "category"
                     }
                 },
                 // array => object
@@ -76,16 +76,16 @@ const blogCtrl = {
                 },
                 // sorting
                 {
-                    $sort: { "createdAt" : -1}
+                    $sort: { createdAt : -1}
                 },
                 // Group by category
 
                 {
                     $group: {
-                        _id: "$category._id",
-                        name: { $first: "$category.name"},
-                        blogs: { $push: "$$ROOT"},
-                        count: {$sum: 1}
+                        "_id": "$category._id",
+                        "name": { $first: "$category.name"},
+                        "blogs": { $push: "$$ROOT"},
+                        "count": {$sum: 1}
                     }
                 },
 
@@ -99,8 +99,8 @@ const blogCtrl = {
                         name: 1
                     }
                 }
-            ]).skip(0)
-              .limit(2)
+            ])
+              
             
             res.json(
                 blogs
