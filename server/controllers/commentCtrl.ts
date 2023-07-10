@@ -164,6 +164,63 @@ const commentCtrl = {
             res.status(500).json({msg: err.message})
         }
     },
+
+  updateComment: async (req: IReqAuth, res: Response) => {
+      if(!req.user)
+          return res.status(400).json({msg: "Invalid Authentication"})
+      try {
+
+          const { content } = req.body;
+
+          const comment = await Comments.findOneAndUpdate({
+            _id: req.params.id,
+            // user: req.params.id
+          }, { content })
+       
+          if(!comment) 
+            return res.status(400).json({msg: "Comment does not exists"})
+          
+          return res.json({msg: "Update success"})
+          
+      } catch (err: any) {
+          res.status(500).json({msg: err.message})
+      } 
+  },
+
+  deleteComment: async (req: IReqAuth, res: Response) => {
+    if(!req.user)
+        return res.status(400).json({msg: "Invalid Authentication"})
+    try {
+
+
+        const comment = await Comments.findOneAndDelete({
+          _id: req.params.id,
+          $or: [
+            {user: req.user._id},
+            {blog_user_id: req.user._id}
+          ]
+        })
+     
+        if(!comment) 
+          return res.status(400).json({msg: "Comment does not exists"})
+        
+        if(comment?.comment_root){
+          await Comments.findOneAndUpdate({_id: comment.comment_root},{
+            $pull: { replyCM: comment._id}
+          })
+        }else{
+          // delete all comment in replyCM 
+          await Comments.deleteMany({_id: {$in: comment.replyCM}})
+        }
+
+        return res.json({msg: "Delete success"})
+        
+    } catch (err: any) {
+        res.status(500).json({msg: err.message})
+    } 
+},
+
+  
 }
 
 export default commentCtrl;

@@ -22,7 +22,7 @@ const AvatarReply: React.FC<IProps> = ({user,reply}) => {
     </small>
     <small>
        {reply && <>Reply to<Link to={`/profile/${reply?._id}`}>
-            {user?.name}
+            {reply?.name}
         </Link>
        </>
        } 

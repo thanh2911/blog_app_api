@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IComment, RootStore } from '../../utils/TypesScript';
 import Input from './Input';
-import { replyComments } from '../../redux/actions/commentAction';
+import { deleteComment, replyComments, updateComment } from '../../redux/actions/commentAction';
 
 interface IProps {
     comment: IComment,
@@ -14,6 +14,8 @@ const CommentList: React.FC<IProps> = ({comment,showReply,setShowReply}) => {
     const [onReply, setOnReply] = useState(false);
     const { auth } = useSelector((state: RootStore) => state)
     const dispatch = useDispatch<any>()
+
+    const [edit,setEdit] = useState<IComment>()
 
     const handleReply =  (body: string) => {
        if(!auth.user || !auth.access_token) return;
@@ -34,26 +36,75 @@ const CommentList: React.FC<IProps> = ({comment,showReply,setShowReply}) => {
         dispatch(replyComments(data, auth.access_token))
        setOnReply(false)
         
-    }    
+    }   
+
+    const handleDelete = (comment: IComment) => {
+        if(!auth.user || !auth.access_token) return;
+
+        dispatch(deleteComment(comment, auth.access_token))
+    }
+    
+    const NavEditDelete = (comment: IComment) => {
+        return (
+            <div>
+                <i onClick={() => handleDelete(comment)}> Delete</i> 
+                <i onClick={() => setEdit(comment)}>Edit</i>
+
+            </div>
+        )
+    }
+
+    const handleEdit = (body: string) => {
+        if(!auth.user || !auth.access_token || !edit) return;
+
+        if(body === edit.content) return setEdit(undefined)
+
+        const newComment = {...edit, content:body}
+
+        dispatch(updateComment(newComment, auth.access_token))
+        setEdit(undefined)
+        
+    }
 
   return (
     <div className="comment_list">
-        <div dangerouslySetInnerHTML={{
-            __html: comment.content
-        }}/>
-
-        <div>
-            <small onClick={() => setOnReply(!onReply)}>
-                { onReply ?  " - Cancel -" : " - Reply -"}
-            </small>
-            <small>
-                {new Date(comment.createdAt).toLocaleString()} 
-            </small>
-        </div>
-
         {
-            onReply && <Input callback={handleReply}/>
+            edit 
+            ? <Input callback={handleEdit} edit={edit} setEdit={setEdit}/>
+            :
+            <>
+             <div dangerouslySetInnerHTML={{
+                __html: comment.content
+            }}/>
+
+            <div>
+                <small onClick={() => setOnReply(!onReply)}>
+                    { onReply ?  " - Cancel -" : " - Reply -"}
+                </small>
+
+                <small>
+                    <div>
+                        {
+                            comment.blog_user_id === auth.user?._id
+                            ? comment.user._id === auth.user._id
+                                ? NavEditDelete(comment)
+                                : <i  onClick={() => handleDelete(comment)}>Delete</i>
+                            : comment.user._id === auth.user?._id && NavEditDelete(comment)
+                        }
+                    </div>
+                </small>
+
+                <small>
+                    {new Date(comment.createdAt).toLocaleString()} 
+                </small>
+            </div>
+
+            {
+                onReply && <Input callback={handleReply}/>
+            }
+            </>
         }
+       
     </div>
   )
 }

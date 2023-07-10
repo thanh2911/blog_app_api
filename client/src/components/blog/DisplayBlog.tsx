@@ -35,11 +35,8 @@ const DisplayBlog: React.FC<IProps> = ({blog}) => {
         }
         
         setShowComments([...showComments, data])
-
          dispatch(createComment(data, auth.access_token))
     }
-
-   
 
     const fetchComments = useCallback(async (blog_id: string, num=1) => {
         setLoading(true)
@@ -48,7 +45,7 @@ const DisplayBlog: React.FC<IProps> = ({blog}) => {
     },[dispatch])
 
     useEffect(() => {
-        if(comments.data.length === 0) return;
+        if(comments.data.length === 0 && !blog._id) return;
 
         setShowComments(comments.data)
     }, [comments.data])
