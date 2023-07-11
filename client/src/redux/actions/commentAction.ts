@@ -12,10 +12,10 @@ export const createComment = (data: IComment, token: string
         const res = await postAPI('comment',data,token)    ;
         // console.log({res});
 
-        dispatch({
-            type: CREATE_COMMENT,
-            payload: {...res.data, user: data.user}
-        })
+        // dispatch({
+        //     type: CREATE_COMMENT,
+        //     payload: {...res.data, user: data.user}
+        // })
             
 
         dispatch({type: ALERT, payload: {loading: false}})
@@ -57,14 +57,14 @@ export const replyComments = (data: IComment, token: string
         const res = await postAPI('reply_comment',data,token)    ;
         // console.log({res});
 
-        dispatch({
-            type: REPLY_COMMENT,
-            payload: {
-                ...res.data, 
-                user: data.user,
-                reply_user: data.reply_user
-            }
-        })
+        // dispatch({
+        //     type: REPLY_COMMENT,
+        //     payload: {
+        //         ...res.data, 
+        //         user: data.user,
+        //         reply_user: data.reply_user
+        //     }
+        // })
             
 
         dispatch({type: ALERT, payload: {loading: false}})
@@ -81,14 +81,14 @@ export const updateComment = (data: IComment, token: string
         dispatch({type: ALERT, payload: {loading: true}})        
         
         const res = await patchAPI(`comment/${data._id}`,{
-            content: data.content
+            data
         },token)
         // console.log({res});
 
-        dispatch({
-            type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
-            payload: data
-        })
+        // dispatch({
+        //     type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
+        //     payload: data
+        // })
             
 
         dispatch({type: ALERT, payload: {loading: false}})

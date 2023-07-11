@@ -25,12 +25,13 @@ const CommentList: React.FC<IProps> = ({comment,showReply,setShowReply}) => {
         blog_id: comment.blog_id,
         blog_user_id:comment.blog_user_id,
         content : body,
+        replyCM: [],
         reply_user: comment.user,
         comment_root: comment.comment_root || comment._id,
         createdAt: new Date().toISOString()
        }
 
-       console.log(data);
+    //    console.log(data);
        setShowReply([...showReply,data])
 
         dispatch(replyComments(data, auth.access_token))
