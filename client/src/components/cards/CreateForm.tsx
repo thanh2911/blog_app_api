@@ -27,6 +27,9 @@ const CreateForm: React.FC<IProps> = ({blog,setBlog}) => {
             setBlog({...blog, thumbnail: file})
         }
     }
+
+    // console.log({blog});
+    
   return (
     <form >
         <div className="form-group position-relative" >
@@ -36,7 +39,7 @@ const CreateForm: React.FC<IProps> = ({blog,setBlog}) => {
             onChange={handleChangeInput}
             />
             <small className='text-muted position-absolute' 
-            style={{top:0, right:'3px'}}>{blog.title.length}/50</small>
+            style={{top:0, right:'3px'}}>{blog.title?.length}/50</small>
         </div>
 
         <div className="form-group">
@@ -52,7 +55,7 @@ const CreateForm: React.FC<IProps> = ({blog,setBlog}) => {
             onChange={handleChangeInput}
             />
             <small className='text-muted position-absolute' 
-            style={{bottom:0, right:'3px'}}>{blog.description.length}/200</small>
+            style={{bottom:0, right:'3px'}}>{blog.description?.length}/200</small>
         </div>
 
         <div className="form-group">

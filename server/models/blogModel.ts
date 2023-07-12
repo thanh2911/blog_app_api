@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { IBlog } from '../config/interface';
 
 const blogSchema = new mongoose.Schema({
     user: {
@@ -36,4 +37,4 @@ const blogSchema = new mongoose.Schema({
     timestamps: true
 })
 
-export default mongoose.model('blogs', blogSchema)
+export default mongoose.model<IBlog>('blogs', blogSchema)

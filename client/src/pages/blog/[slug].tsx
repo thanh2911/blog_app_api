@@ -22,7 +22,7 @@ const DetailBlog = () => {
         getAPI(`blog/${slug}`)
             .then(res => {
                 // console.log(res)
-                setBlog(res.data.blog)
+                setBlog(res.data)
                 setLoading(false)
                 
             })

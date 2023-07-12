@@ -77,7 +77,7 @@ const SocketClient = () => {
 
 
   return (
-    <div>SocketClient</div>
+    <div></div>
   )
 }
 

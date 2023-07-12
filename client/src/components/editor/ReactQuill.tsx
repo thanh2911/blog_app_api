@@ -7,9 +7,10 @@ import { ALERT } from '../../redux/types/alertType';
 
 interface IProps {
   setBody: (value: string) => void
+  body: string
 }
 
-const Quill: React.FC<IProps> = ({setBody}) => {
+const Quill: React.FC<IProps> = ({setBody, body}) => {
 
   const dispatch = useDispatch<any>();
   const modules = { toolbar: {container}}
@@ -77,6 +78,7 @@ const Quill: React.FC<IProps> = ({setBody}) => {
           placeholder='Write somethings'
           onChange={e => setBody(e)}
           ref={quillRef}
+          value={body}
         />
     </div>
   )

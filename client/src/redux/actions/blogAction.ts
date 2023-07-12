@@ -1,7 +1,7 @@
 import { Dispatch } from "redux"
 import { ALERT, IAlertType } from "../types/alertType"
 import { CREATE_CATEGORY, ICategoryType } from "../types/categoryType"
-import { getAPI, postAPI } from "../../utils/FetchData"
+import { deleteAPI, getAPI, postAPI, putAPI } from "../../utils/FetchData"
 import { IBlog } from "../../utils/TypesScript"
 import { ImgUploadFile } from "../../utils/ImageUpload"
 import { 
@@ -10,12 +10,16 @@ import {
     GET_BLOGS_CATEGORY_ID, 
     IGetHomeBlogsType,
     GET_BLOGS_USER_ID,
-    IGetBlogsUserType 
+    IGetBlogsUserType, 
+    ICreateBlogsUserType,
+    CREATE_BLOGS_USER_ID,
+    DELETE_BLOGS_USER_ID,
+    IDeleteBlogsUserType
 } from "../types/blogType"
 
 
 export const createBlog = (blog: IBlog, token: string
-    ) => async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
+    ) => async (dispatch: Dispatch<IAlertType | ICreateBlogsUserType>) => {
         let url;
     try {
         dispatch({type: ALERT, payload: {loading: true}})
@@ -32,9 +36,15 @@ export const createBlog = (blog: IBlog, token: string
         const res = await postAPI('blog', newBlog, token)
 
         console.log({res});
+
+        dispatch({
+            type: CREATE_BLOGS_USER_ID,
+            payload: res.data.blog,
+            user: res.data.user
+        })
         
 
-        dispatch({type: ALERT, payload: {loading: false}})
+        dispatch({type: ALERT, payload: {success: res.data.msg}})
 
     } catch (err: any) {
         dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
@@ -105,6 +115,57 @@ async (dispatch: Dispatch<IAlertType | IGetBlogsUserType>) => {
         })
 
         dispatch({type: ALERT, payload: {loading: false}})
+
+    } catch (err: any) {
+        dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
+        
+    }
+}
+
+export const updateBlog = (blog: IBlog, token: string
+    ) => async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
+        let url;
+    try {
+        dispatch({type: ALERT, payload: {loading: true}})
+
+        if(typeof(blog.thumbnail) !== 'string') {
+            const photo = await ImgUploadFile(blog.thumbnail)
+            url = photo.url
+        }else {
+            url = blog.thumbnail
+        }
+        
+        const newBlog = {...blog, thumbnail: url};
+
+        const res = await putAPI(`blog/${newBlog._id}`, newBlog, token)
+
+        console.log({res});
+        
+
+        dispatch({type: ALERT, payload: {success: res.data.msg}})
+
+    } catch (err: any) {
+        dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
+        
+    }
+}
+
+export const deleteBlog = (blog: IBlog, token: string
+    ) => async (dispatch: Dispatch<IAlertType | IDeleteBlogsUserType>) => {
+    try {
+        dispatch({type: ALERT, payload: {loading: true}})
+
+        const res = await deleteAPI(`blog/${blog._id}`, token);
+
+        console.log({res});
+        
+       
+        dispatch({
+            type: DELETE_BLOGS_USER_ID,
+            payload: blog
+        })
+
+        dispatch({type: ALERT, payload: {success: res.data.msg}})
 
     } catch (err: any) {
         dispatch({type: ALERT, payload: {errors: err.response.data.msg}})
