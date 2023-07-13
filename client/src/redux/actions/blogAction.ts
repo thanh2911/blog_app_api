@@ -16,10 +16,13 @@ import {
     DELETE_BLOGS_USER_ID,
     IDeleteBlogsUserType
 } from "../types/blogType"
+import { checkTokenExp } from "../../utils/checkTonkenExp"
 
 
 export const createBlog = (blog: IBlog, token: string
     ) => async (dispatch: Dispatch<IAlertType | ICreateBlogsUserType>) => {
+        const result = await checkTokenExp(token,dispatch);
+        const access_token = result ? result : token
         let url;
     try {
         dispatch({type: ALERT, payload: {loading: true}})
@@ -33,7 +36,7 @@ export const createBlog = (blog: IBlog, token: string
         
         const newBlog = {...blog, thumbnail: url};
 
-        const res = await postAPI('blog', newBlog, token)
+        const res = await postAPI('blog', newBlog, access_token)
 
         console.log({res});
 
@@ -124,7 +127,10 @@ async (dispatch: Dispatch<IAlertType | IGetBlogsUserType>) => {
 
 export const updateBlog = (blog: IBlog, token: string
     ) => async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
+        const result = await checkTokenExp(token,dispatch);
+        const access_token = result ? result : token
         let url;
+
     try {
         dispatch({type: ALERT, payload: {loading: true}})
 
@@ -137,7 +143,7 @@ export const updateBlog = (blog: IBlog, token: string
         
         const newBlog = {...blog, thumbnail: url};
 
-        const res = await putAPI(`blog/${newBlog._id}`, newBlog, token)
+        const res = await putAPI(`blog/${newBlog._id}`, newBlog, access_token)
 
         console.log({res});
         
@@ -152,10 +158,12 @@ export const updateBlog = (blog: IBlog, token: string
 
 export const deleteBlog = (blog: IBlog, token: string
     ) => async (dispatch: Dispatch<IAlertType | IDeleteBlogsUserType>) => {
-    try {
+        const result = await checkTokenExp(token,dispatch);
+        const access_token = result ? result : token
+        try {
         dispatch({type: ALERT, payload: {loading: true}})
 
-        const res = await deleteAPI(`blog/${blog._id}`, token);
+        const res = await deleteAPI(`blog/${blog._id}`, access_token);
 
         console.log({res});
         

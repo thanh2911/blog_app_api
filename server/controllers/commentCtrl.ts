@@ -41,7 +41,9 @@ const commentCtrl = {
             // console.log(data);
             
             
-            return res.json(newComment)
+            return res.json({
+              msg: " Comment success!" 
+            })
             
         } catch (err: any) {
             res.status(500).json({msg: err.message})

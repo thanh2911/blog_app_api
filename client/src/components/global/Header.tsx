@@ -6,7 +6,9 @@ import Menu from './Menu';
 const Header = () => {
 
   return (
-    <div className="header">
+    <div className="header" style={{
+      position: 'sticky', top:0,left:0, zIndex: 9
+    }}>
         <Link to= '/'>Blog App</Link>
 
         <Search />

@@ -3,13 +3,16 @@ import { ALERT ,IAlertType } from '../types/alertType';
 import { getAPI, patchAPI, postAPI, deleteAPI} from '../../utils/FetchData';
 import { CREATE_CATEGORY, GET_CATEGORIES, UPDATE_CATEGORY, DELETE_CATEGORY, ICategoryType } from '../types/categoryType';
 import { ICategory } from '../../utils/TypesScript';
+import { checkTokenExp } from '../../utils/checkTonkenExp';
 
 export const createCategory = (name: string, token: string
     ) => async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
+        const result = await checkTokenExp(token,dispatch);
+        const access_token = result ? result : token
     try {
         dispatch({type: ALERT, payload: {loading: true}})
         
-        const res = await postAPI('category', {name}, token)
+        const res = await postAPI('category', {name}, access_token)
 
         dispatch({
             type: CREATE_CATEGORY,
@@ -47,11 +50,13 @@ async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
 
 export const updateCategory = (data: ICategory, token: string
     ) => async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
+        const result = await checkTokenExp(token,dispatch);
+        const access_token = result ? result : token
     try {
         dispatch({type: ALERT, payload: {loading: true}})
         
         const res = await patchAPI(`category/${data._id}`,{
-            name:data.name},token)
+            name:data.name},access_token)
 
         dispatch({
             type: UPDATE_CATEGORY,
@@ -68,10 +73,16 @@ export const updateCategory = (data: ICategory, token: string
 
 export const deleteCategory = (id: string, token: string
     ) => async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
+
+        const result = await checkTokenExp(token,dispatch);
+        const access_token = result ? result : token
+
+        // console.log({result});
+        
     try {
         dispatch({type: ALERT, payload: {loading: true}})
         
-        const res = await deleteAPI(`category/${id}`,token) 
+        const res = await deleteAPI(`category/${id}`,access_token) 
 
         dispatch({
             type: DELETE_CATEGORY,

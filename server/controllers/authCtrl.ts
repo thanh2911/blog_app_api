@@ -134,27 +134,31 @@ const authCtrl = {
 
 }
 
-const loginUser = async (user: IUser, password: string, res: Response) => {
+    const loginUser = async (user: IUser, password: string, res: Response) => {
 
-    const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
 
-    if(!isMatch) return res.status(400).json({msg: 'Password is incorrect.'});
+        if(!isMatch) return res.status(400).json({msg: 'Password is incorrect.'});
 
-    const access_token = generateAccessToken({id: user._id});
-    const refresh_token = generateRefreshToken({id: user._id});
-    
-    res.cookie('refresh_token',refresh_token, {
-        httpOnly: true,
-        path: `/api/refresh_token`,
-        maxAge: 30*24*60*60*1000 // 30 days
-    });
+        const access_token = generateAccessToken({id: user._id});
+        const refresh_token = generateRefreshToken({id: user._id});
+        
+        res.cookie('refresh_token',refresh_token, {
+            httpOnly: true,
+            path: `/api/refresh_token`,
+            maxAge: 30*24*60*60*1000 // 30 days
+        });
 
-    res.json({
-        msg: 'Login Success !',
-        access_token,
-        user: {...user._doc, password:''}
-    })
-}
+        await Users.findByIdAndUpdate({_id: user._id},{
+            rf_token: refresh_token
+        })
+
+        res.json({
+            msg: 'Login Success !',
+            access_token,
+            user: {...user._doc, password:''}
+        })
+    }
 
 
 export default authCtrl;

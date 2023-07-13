@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import Categories from "../models/categoryModel";
+import Blogs from "../models/blogModel";
+
+
 import { IReqAuth } from "../config/interface";
 
 const categoryCtrl = {
@@ -64,8 +67,19 @@ const categoryCtrl = {
     
         if(req.user.role !== 'admin') return res.status(400).json({msg: "Invalid Authentication."})
         try {
-            await Categories.findByIdAndDelete(req.params.id)
 
+            const blog = await Blogs.findOne({category: req.params.id})
+
+            if(blog){
+                return res.status(400).json({
+                    msg: "Can not delete! In this category also exist blog."
+                })
+            }
+
+            const category = await Categories.findByIdAndDelete(req.params.id)
+
+            if(!category) 
+            return res.status(400).json({msg: "Category does not exists ."})
 
             res.json({msg:"Delete success !"})
         } catch (err: any) {
