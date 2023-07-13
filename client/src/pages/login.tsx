@@ -31,7 +31,7 @@ const Login = () => {
 
         <small>
           <span>
-            <Link to={'forgot_password'} >
+            <Link to={'/forgot_password'} >
               Forgot Password
             </Link>
           </span>
